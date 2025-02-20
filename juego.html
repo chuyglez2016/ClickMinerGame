@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Miner</title>
+</head>
+<body>
+    <h1>Click Miner</h1>
+    <p id="goldCount">Oro: 0</p>
+    <p id="clickPower">Oro por clic: 1</p>
+    <p id="passiveIncome">Oro por segundo: 0</p>
+    <button id="clickButton">Minar Oro</button>
+    <button id="pickaxeButton">Comprar Pico (10 oro)</button>
+    <button id="workerButton">Contratar Trabajador (50 oro)</button>
+
+    <script>
+        class ClickMiner {
+            constructor() {
+                this.gold = 0;
+                this.goldPerClick = 1;
+                this.goldPerSecond = 0;
+                this.init();
+            }
+
+            init() {
+                document.getElementById("clickButton").addEventListener("click", () => this.mineGold());
+                setInterval(() => this.passiveMining(), 1000);
+                this.updateUI();
+            }
+
+            mineGold() {
+                this.gold += this.goldPerClick;
+                this.updateUI();
+            }
+
+            passiveMining() {
+                this.gold += this.goldPerSecond;
+                this.updateUI();
+            }
+
+            buyUpgrade(type) {
+                if (type === "pickaxe" && this.gold >= 10) {
+                    this.gold -= 10;
+                    this.goldPerClick += 1;
+                } else if (type === "worker" && this.gold >= 50) {
+                    this.gold -= 50;
+                    this.goldPerSecond += 1;
+                }
+                this.updateUI();
+            }
+
+            updateUI() {
+				document.getElementById("goldCount").innerText = `Oro: ${this.gold}`;
+				document.getElementById("clickPower").innerText = `Oro por clic: ${this.goldPerClick}`;
+				document.getElementById("passiveIncome").innerText = `Oro por segundo: ${this.goldPerSecond}`;
+				}
+        }
+
+        // Inicializar el objeto game cuando el DOM esté listo
+        window.addEventListener("DOMContentLoaded", () => {
+            window.game = new ClickMiner();  // Aseguramos que la variable game esté inicializada
+        });
+
+        // Llamar a los métodos de compra de mejoras cuando los botones sean presionados
+        document.getElementById("pickaxeButton").addEventListener("click", () => {
+            game.buyUpgrade("pickaxe");
+        });
+
+        document.getElementById("workerButton").addEventListener("click", () => {
+            game.buyUpgrade("worker");
+        });
+    </script>
+</body>
+</html>
