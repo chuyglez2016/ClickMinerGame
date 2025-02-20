@@ -1,0 +1,86 @@
+class ClickMiner {
+    constructor() {
+        this.gold = 0;
+        this.goldPerClick = 1;
+        this.goldPerSecond = 0;
+        this.init();
+    }
+
+    init() {
+        // Asignar los eventos de clic a los botones
+        document.getElementById("clickButton").addEventListener("click", () => this.mineGold());
+        setInterval(() => this.passiveMining(), 1000); // Minado pasivo cada segundo
+        this.updateUI();
+    }
+
+    mineGold() {
+        this.gold += this.goldPerClick;
+        this.updateUI();
+    }
+
+    passiveMining() {
+        this.gold += this.goldPerSecond;
+        this.updateUI();
+    }
+
+    buyUpgrade(type) {
+        if (type === "pickaxe" && this.gold >= 10) {
+            this.gold -= 10;
+            this.goldPerClick += 1;
+        } else if (type === "worker" && this.gold >= 50) {
+            this.gold -= 50;
+            this.goldPerSecond += 1;
+        }
+        this.updateUI();
+    }
+
+    updateUI() {
+        document.getElementById("goldCount").innerText = Oro: ${this.gold};
+        document.getElementById("clickPower").innerText = Oro por clic: ${this.goldPerClick};
+        document.getElementById("passiveIncome").innerText = Oro por segundo: ${this.goldPerSecond};
+    }
+}
+
+// Crear el objeto de juego cuando se carga la página
+window.game = new ClickMiner();
+/* Estilos generales del juego */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ff9800;
+}
+
+p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para el contador de oro */
+#goldCount, #clickPower, #passiveIncome {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
